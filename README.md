@@ -21,7 +21,7 @@ When first signing in to a WooCommerce site, the links will take a few seconds t
 
 ##### Packaged extension file
 
-1. [click here (or right click - save as)](https://github.com/WillBrubaker/hiro-quick-links/blob/master/hirochrome.crx?raw=true)
+1. [click here (or right click - save as)](https://github.com/WillBrubaker/hiro-quick-links/blob/master/hiro-quick-links.crx?raw=true)
 2. That will download hirochrome.crx to you default Downloads directory. It will also give you a notice that extensions can not be installed from this website.
 3. In your chrome location bar chrome://extensions/
 4. Drag & drop hirochrome.crx from your downloads folder to the browser window

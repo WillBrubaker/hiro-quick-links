@@ -1,4 +1,3 @@
-var noticesDisplayed = true
 restore_options()
 var tabContent
 
@@ -10,14 +9,12 @@ $("#toggle-notices").on("click", function() {
 	}, function(tabs) {
 		message = {
 			"action": "toggleNotices",
-			"value": noticesDisplayed
+			"value": true
 		}
 		chrome.tabs.sendMessage(tabs[0].id, {
 			message: message
 		}, function(response) {
-			if ("undefined" != typeof response.noticesDisplayed) {
-				noticesDisplayed = response.noticesDisplayed
-			}
+			return true
 		})
 	})
 	window.close()

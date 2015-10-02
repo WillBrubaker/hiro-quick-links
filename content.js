@@ -2,6 +2,7 @@ var siteContent
 var site
 var protocol
 var underLinks = []
+var noticesDisplayed = true
 
 jQuery(document).ready(function() {
 
@@ -85,11 +86,9 @@ chrome.runtime.onMessage.addListener(
 	function(request, sender, sendResponse) {
 		if ('undefined' != typeof request.message) {
 			if ("toggleNotices" == request.message.action) {
-				show = (request.message.value) ? false : true
+				show = (noticesDisplayed) ? false : true
 				jQuery(".notice, .updated, .error, .update-nag").toggle(show)
-				sendResponse({
-					"noticesDisplayed": (show) ? true : false
-				})
+				noticesDisplayed = show
 			}
 			if ("hideYoast" == request.message.action) {
 				show = (request.message.value) ? false : true
