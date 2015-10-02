@@ -1,4 +1,4 @@
-# Hiro's Quick Link's
+# Hiro's Quick Links
 
 ### A Chrome browser extension
 
