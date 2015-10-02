@@ -87,9 +87,8 @@ chrome.runtime.onMessage.addListener(
 			if ("toggleNotices" == request.message.action) {
 				show = (request.message.value) ? false : true
 				jQuery(".notice, .updated, .error, .update-nag").toggle(show)
-				showing = (show) ? true : false
 				sendResponse({
-					noticesDisplayed: showing
+					"noticesDisplayed": (show) ? true : false
 				})
 			}
 			if ("hideYoast" == request.message.action) {
