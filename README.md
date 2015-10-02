@@ -17,7 +17,7 @@ When first signing in to a WooCommerce site, the links will take a few seconds t
 ##### From the repo 
 
 1. Clone the repo
-2. See the **Load the extension** heading here: [Getting Started: Building a Chrome Extension](https://developer.chrome.com/extensions/getstarted)
+2. See the **Load the extension** heading here: [Getting Started: Building a Chrome Extension](https://developer.chrome.com/extensions/getstarted#unpacked)
 
 ##### Packaged extension file
 
