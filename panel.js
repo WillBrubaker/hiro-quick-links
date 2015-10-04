@@ -93,7 +93,7 @@ jQuery(document).ready(function() {
 				jQuery("a").each(function() {
 					jQuery(this).attr('title', jQuery(this).attr("href"))
 				})
-				Tipped.create("a", null,{position: "bottom"})
+				Tipped.create("a", null,{position: "bottom", fadeIn: 1200})
 				jQuery("a").on("click", function() {
 					href = jQuery(this).attr("href")
 					chrome.tabs.update(tabs[0].id, {url: href})

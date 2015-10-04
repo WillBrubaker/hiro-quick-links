@@ -31,7 +31,7 @@ jQuery(document).ready(function() {
 						if (index > 0) {
 							wcLinks += '<li>'
 						}
-						wcLinks += '<a href="' + href + '">' + anchorText + '</a>'
+						wcLinks += '<a href="' + href + '" tabindex="-1">' + anchorText + '</a>'
 						if (index > 0) {
 							wcLinks += '</li>'
 						}
@@ -157,7 +157,7 @@ function processResponse(wcLinks) {
 				$("a", wcMenu).each(function() {
 					href = protocol + "//" + site + "/wp-admin/" + $(this).attr("href")
 					text = $(this).text()
-					html += '<li><a href="' + href + '">' + text + '</a></li>'
+					html += '<li><a href="' + href + '" tabindex="-1">' + text + '</a></li>'
 				})
 				html += "</ul>"
 				siteContent = html
