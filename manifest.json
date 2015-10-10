@@ -1,7 +1,8 @@
 {
 	"name": "Hiro's Quick Links",
 	"description": "Handy navigation links for WooCommerce sites",
-	"version": "0.3",
+	"version": "0.4",
+	"update_url": "https://www.dropbox.com/s/k81arcmpo2huw8c/updates.xml?dl=1",
 	"icons": {
 		"16": "icon_16.png",
 		"48": "icon_48.png",
