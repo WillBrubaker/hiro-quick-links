@@ -3,6 +3,7 @@ var site
 var protocol
 var underLinks = []
 var noticesDisplayed = true
+var wcPages = {}
 
 jQuery(document).ready(function() {
 
@@ -20,8 +21,8 @@ jQuery(document).ready(function() {
 				"site": site
 			}
 		}
-		chrome.runtime.sendMessage(message, function(response) {//ask the background script for content for this site
-			if ("undefined" != response.content && false == response.content) {//bg script didn't have content - fetch new
+		chrome.runtime.sendMessage(message, function(response) { //ask the background script for content for this site
+			if ("undefined" != response.content && false == response.content) { //bg script didn't have content - fetch new
 				jQuery.when(jQuery.get(protocol + "//" + site + "/wp-admin/admin.php?page=wc-settings", function(data) {
 					links = jQuery('h2.woo-nav-tab-wrapper a', data)
 					wcLinks = '<ul>'
@@ -40,6 +41,26 @@ jQuery(document).ready(function() {
 				}).fail(function(xhr) {
 					console.log(xhr)
 				}).done(function() {
+					jQuery.when(jQuery.get(protocol + "//" + site + "/wp-admin/admin.php?page=wc-settings&tab=products&section=display", function(data) {
+						shopPageId = jQuery("#woocommerce_shop_page_id option:selected", data).val()
+						if (shopPageId.length > 0) {
+							wcPages.Shop = protocol + "//" + site + "?page_id=" + shopPageId
+						}
+					}).done(function() {}))
+					jQuery.when(jQuery.get(protocol + "//" + site + "/wp-admin/admin.php?page=wc-settings&tab=checkout", function(data) {
+						cartPageId = jQuery("#woocommerce_cart_page_id option:selected", data).val()
+						if (cartPageId.length > 0) {
+							wcPages.Cart = protocol + "//" + site + "?page_id=" + cartPageId
+						}
+						checkoutPageId = jQuery("#woocommerce_checkout_page_id option:selected", data).val()
+						if (checkoutPageId.length > 0) {
+							wcPages.Checkout = protocol + "//" + site + "?page_id=" + checkoutPageId
+						}
+					}).done(function() {}))
+					jQuery.when(jQuery.get(protocol + "//" + site + "/wp-admin/admin.php?page=wc-settings&tab=account", function(data) {
+						myAccountPageId = jQuery("#woocommerce_myaccount_page_id option:selected", data).val()
+						wcPages.MyAccount = protocol + "//" + site + "?page_id=" + myAccountPageId
+					}).done(function() {}))
 					processResponse(wcLinks)
 				}))
 			} else {
@@ -58,9 +79,9 @@ jQuery(document).ready(function() {
 	/*get the hide yoast setting, hide if appropriate*/
 	chrome.storage.sync.get({
 		hideYoast: true
-		}, function(items) {
-			if (items.hideYoast) {
-				jQuery(".column-wpseo-score, .column-wpseo-title, .column-wpseo-title, .column-wpseo-metadesc, .column-wpseo-focuskw").hide()
+	}, function(items) {
+		if (items.hideYoast) {
+			jQuery(".column-wpseo-score, .column-wpseo-title, .column-wpseo-title, .column-wpseo-metadesc, .column-wpseo-focuskw").hide()
 		}
 	})
 
@@ -134,7 +155,7 @@ function processResponse(wcLinks) {
 	$(subLinks).each(function(index) {
 		var sub = $(this)
 		var theLinks = {}
-		href = $(this).attr('href')
+		var href = $(this).attr('href')
 		$.when($.get(href, function(subData) {
 			underLinks[index] = $('ul.subsubsub', subData)
 		}).done(function() {
@@ -159,6 +180,11 @@ function processResponse(wcLinks) {
 					text = $(this).text()
 					html += '<li><a href="' + href + '" tabindex="-1">' + text + '</a></li>'
 				})
+				html += "</ul>"
+				html += "<hr>Frontend:<br><ul>"
+				for (index in wcPages) {
+					html += "<li><a href=" + wcPages[index] + ">" + index + "</a></li>"
+				}
 				html += "</ul>"
 				siteContent = html
 				message = {
