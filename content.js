@@ -3,7 +3,7 @@ var site
 var protocol
 var underLinks = []
 var noticesDisplayed = true
-var wcPages = {}
+var wcPages = {"Cart": null, "Checkout": null, "MyAccount": null, "Shop": null}
 
 jQuery(document).ready(function() {
 
@@ -183,7 +183,11 @@ function processResponse(wcLinks) {
 				html += "</ul>"
 				html += "<hr>Frontend:<br><ul>"
 				for (index in wcPages) {
-					html += "<li><a href=" + wcPages[index] + ">" + index + "</a></li>"
+					if ( null !== wcPages[index] ) {
+						html += "<li><a href=" + wcPages[index] + ">" + index + "</a></li>"
+					} else {
+						html += "<li>" + index + " is undefined</li>"
+					}
 				}
 				html += "</ul>"
 				siteContent = html
