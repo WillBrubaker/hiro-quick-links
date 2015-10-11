@@ -3,7 +3,12 @@ var site
 var protocol
 var underLinks = []
 var noticesDisplayed = true
-var wcPages = {"Cart": null, "Checkout": null, "MyAccount": null, "Shop": null}
+var wcPages = {
+	"Cart": null,
+	"Checkout": null,
+	"My Account": null,
+	"Shop": null
+}
 
 jQuery(document).ready(function() {
 
@@ -59,7 +64,9 @@ jQuery(document).ready(function() {
 					}).done(function() {}))
 					jQuery.when(jQuery.get(protocol + "//" + site + "/wp-admin/admin.php?page=wc-settings&tab=account", function(data) {
 						myAccountPageId = jQuery("#woocommerce_myaccount_page_id option:selected", data).val()
-						wcPages.MyAccount = protocol + "//" + site + "?page_id=" + myAccountPageId
+						if (myAccountPageId.length > 0) {
+							wcPages["My Account"] = protocol + "//" + site + "?page_id=" + myAccountPageId
+						}
 					}).done(function() {}))
 					processResponse(wcLinks)
 				}))
@@ -183,7 +190,7 @@ function processResponse(wcLinks) {
 				html += "</ul>"
 				html += "<hr>Frontend:<br><ul>"
 				for (index in wcPages) {
-					if ( null !== wcPages[index] ) {
+					if (null !== wcPages[index]) {
 						html += "<li><a href=" + wcPages[index] + ">" + index + "</a></li>"
 					} else {
 						html += "<li>" + index + " is undefined</li>"
