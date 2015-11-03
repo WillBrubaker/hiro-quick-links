@@ -1,3 +1,20 @@
+/**
+ * License: GPLv2 http://www.gnu.org/licenses/gpl-2.0.html
+ * Copyright (C) 2015  Will Brubaker
+	* This program is free software; you can redistribute it and/or
+	* modify it under the terms of the GNU General Public License
+	* as published by the Free Software Foundation; either version 2
+	* of the License, or (at your option) any later version.
+	*
+	* This program is distributed in the hope that it will be useful,
+	* but WITHOUT ANY WARRANTY; without even the implied warranty of
+	* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+	* GNU General Public License for more details.
+	*
+	* You should have received a copy of the GNU General Public License
+	* along with this program; if not, write to the Free Software
+	* Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ */
 var siteContent
 var site
 var protocol
@@ -48,23 +65,23 @@ jQuery(document).ready(function() {
 				}).done(function() {
 					jQuery.when(jQuery.get(protocol + "//" + site + "/wp-admin/admin.php?page=wc-settings&tab=products&section=display", function(data) {
 						shopPageId = jQuery("#woocommerce_shop_page_id option:selected", data).val()
-						if (shopPageId.length > 0) {
+						if ("undefined" != typeof shopPageId && shopPageId.length > 0) {
 							wcPages.Shop = protocol + "//" + site + "?page_id=" + shopPageId
 						}
 					}).done(function() {}))
 					jQuery.when(jQuery.get(protocol + "//" + site + "/wp-admin/admin.php?page=wc-settings&tab=checkout", function(data) {
 						cartPageId = jQuery("#woocommerce_cart_page_id option:selected", data).val()
-						if (cartPageId.length > 0) {
+						if ("undefined" != typeof cartPageId && cartPageId.length > 0) {
 							wcPages.Cart = protocol + "//" + site + "?page_id=" + cartPageId
 						}
 						checkoutPageId = jQuery("#woocommerce_checkout_page_id option:selected", data).val()
-						if (checkoutPageId.length > 0) {
+						if ("undefined" != typeof checkoutPageId && checkoutPageId.length > 0) {
 							wcPages.Checkout = protocol + "//" + site + "?page_id=" + checkoutPageId
 						}
 					}).done(function() {}))
 					jQuery.when(jQuery.get(protocol + "//" + site + "/wp-admin/admin.php?page=wc-settings&tab=account", function(data) {
 						myAccountPageId = jQuery("#woocommerce_myaccount_page_id option:selected", data).val()
-						if (myAccountPageId.length > 0) {
+						if ("undefined" != typeof myAccountPageId && myAccountPageId.length > 0) {
 							wcPages["My Account"] = protocol + "//" + site + "?page_id=" + myAccountPageId
 						}
 					}).done(function() {}))

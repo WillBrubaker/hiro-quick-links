@@ -25,3 +25,11 @@ When first signing in to a WooCommerce site, the links will take a few seconds t
 2. That will download hiro-quick-links.crx to you default Downloads directory. It will also give you a notice that extensions can not be installed from this website.
 3. In your chrome location bar chrome://extensions/
 4. Drag & drop hiro-quick-links.crx from your downloads folder to the browser window
+
+##### License
+
+This extension is released under the terms of the [GPLv2](http://www.gnu.org/licenses/gpl-2.0.html) It does contain components that have their own separate license terms. 
+
+jQuery is released under the [MIT license](https://jquery.org/license/)
+
+Tipped is released under its own [license](http://www.tippedjs.com/license)
