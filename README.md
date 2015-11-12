@@ -14,7 +14,7 @@ When first signing in to a WooCommerce site, the links will take a few seconds t
 
 #### Installation
 
-##### From the repo 
+##### From the repo
 
 1. Clone the repo
 2. See the **Load the extension** heading here: [Getting Started: Building a Chrome Extension](https://developer.chrome.com/extensions/getstarted#unpacked)
@@ -28,8 +28,8 @@ When first signing in to a WooCommerce site, the links will take a few seconds t
 
 ##### License
 
-This extension is released under the terms of the [GPLv2](http://www.gnu.org/licenses/gpl-2.0.html) It does contain components that have their own separate license terms. 
+This extension is released under the terms of the [GPLv2](http://www.gnu.org/licenses/gpl-2.0.html) It does contain components that have their own separate license terms.
 
-jQuery is released under the [MIT license](https://jquery.org/license/)
+jQuery is licensed under the [MIT license](https://jquery.org/license/)
 
-Tipped is released under its own [license](http://www.tippedjs.com/license)
+qTip is licensed under the [MIT license](https://github.com/qTip2/qTip2#license)
