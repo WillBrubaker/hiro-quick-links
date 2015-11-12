@@ -1,19 +1,19 @@
 /**
  * License: GPLv2 http://www.gnu.org/licenses/gpl-2.0.html
  * Copyright (C) 2015  Will Brubaker
-	* This program is free software; you can redistribute it and/or
-	* modify it under the terms of the GNU General Public License
-	* as published by the Free Software Foundation; either version 2
-	* of the License, or (at your option) any later version.
-	*
-	* This program is distributed in the hope that it will be useful,
-	* but WITHOUT ANY WARRANTY; without even the implied warranty of
-	* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-	* GNU General Public License for more details.
-	*
-	* You should have received a copy of the GNU General Public License
-	* along with this program; if not, write to the Free Software
-	* Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 restore_options()
 var tabContent
@@ -108,12 +108,28 @@ jQuery(document).ready(function() {
 			if ("undefined" != typeof response && "undefined" != typeof response.content) { //if there is content, put the links in the thing, man
 				$("#wc-links").empty().append(response.content)
 				jQuery("a").each(function() {
-					jQuery(this).attr('title', jQuery(this).attr("href"))
+					jQuery(this).qtip({
+						content: {
+							text: jQuery(this).attr("href")
+						},
+						position: {
+							my: "bottom left",
+							at: "top left",
+							target: jQuery("#tooltip")
+						},
+						style: {
+							classes: "qtip-tipsy"
+						},
+						show: {
+							delay: 300
+						}
+					})
 				})
-				Tipped.create("a", null,{position: "top", showDelay: 500, target: jQuery("#tooltip")})
 				jQuery("a").on("click", function() {
 					href = jQuery(this).attr("href")
-					chrome.tabs.update(tabs[0].id, {url: href})
+					chrome.tabs.update(tabs[0].id, {
+						url: href
+					})
 					window.close()
 				})
 			}
