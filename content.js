@@ -66,23 +66,23 @@ jQuery(document).ready(function() {
 					jQuery.when(jQuery.get(protocol + "//" + site + "/wp-admin/admin.php?page=wc-settings&tab=products&section=display", function(data) {
 						shopPageId = jQuery("#woocommerce_shop_page_id option:selected", data).val()
 						if ("undefined" != typeof shopPageId && shopPageId.length > 0) {
-							wcPages.Shop = protocol + "//" + site + "?page_id=" + shopPageId
+							wcPages.Shop = protocol + "//" + site + "/?p=" + shopPageId
 						}
 					}).done(function() {}))
 					jQuery.when(jQuery.get(protocol + "//" + site + "/wp-admin/admin.php?page=wc-settings&tab=checkout", function(data) {
 						cartPageId = jQuery("#woocommerce_cart_page_id option:selected", data).val()
 						if ("undefined" != typeof cartPageId && cartPageId.length > 0) {
-							wcPages.Cart = protocol + "//" + site + "?page_id=" + cartPageId
+							wcPages.Cart = protocol + "//" + site + "/?p=" + cartPageId
 						}
 						checkoutPageId = jQuery("#woocommerce_checkout_page_id option:selected", data).val()
 						if ("undefined" != typeof checkoutPageId && checkoutPageId.length > 0) {
-							wcPages.Checkout = protocol + "//" + site + "?page_id=" + checkoutPageId
+							wcPages.Checkout = protocol + "//" + site + "/?p=" + checkoutPageId
 						}
 					}).done(function() {}))
 					jQuery.when(jQuery.get(protocol + "//" + site + "/wp-admin/admin.php?page=wc-settings&tab=account", function(data) {
 						myAccountPageId = jQuery("#woocommerce_myaccount_page_id option:selected", data).val()
 						if ("undefined" != typeof myAccountPageId && myAccountPageId.length > 0) {
-							wcPages["My Account"] = protocol + "//" + site + "?page_id=" + myAccountPageId
+							wcPages["My Account"] = protocol + "//" + site + "/?p=" + myAccountPageId
 						}
 					}).done(function() {}))
 					processResponse(wcLinks)
