@@ -84,9 +84,3 @@ body {
 div#utilities > * {
 	margin-top: 10px;
 }
-
-div#tooltip {
-	position: fixed;
-	bottom: 0;
-	left: 15px;
-}

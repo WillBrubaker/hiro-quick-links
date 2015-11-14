@@ -114,8 +114,8 @@ jQuery(document).ready(function() {
 						},
 						position: {
 							my: "bottom left",
-							at: "top left",
-							target: jQuery("#tooltip")
+							at: "bottom left",
+							target: jQuery(window)
 						},
 						style: {
 							classes: "qtip-tipsy"
