@@ -1,19 +1,19 @@
 /**
  * License: GPLv2 http://www.gnu.org/licenses/gpl-2.0.html
  * Copyright (C) 2015  Will Brubaker
-	* This program is free software; you can redistribute it and/or
-	* modify it under the terms of the GNU General Public License
-	* as published by the Free Software Foundation; either version 2
-	* of the License, or (at your option) any later version.
-	*
-	* This program is distributed in the hope that it will be useful,
-	* but WITHOUT ANY WARRANTY; without even the implied warranty of
-	* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-	* GNU General Public License for more details.
-	*
-	* You should have received a copy of the GNU General Public License
-	* along with this program; if not, write to the Free Software
-	* Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 var siteContent
 var site
@@ -28,7 +28,6 @@ var wcPages = {
 }
 
 jQuery(document).ready(function() {
-
 	/*window variables aren't accessible to extension content scripts, need to get the ajax url somehow*/
 	var ajaxUrl = retrieveAjaxUrl()
 	if ("undefined" != typeof ajaxUrl) { //ajaxurl is defined, this is probably a WordPress site
@@ -63,28 +62,32 @@ jQuery(document).ready(function() {
 				}).fail(function(xhr) {
 					console.log(xhr)
 				}).done(function() {
-					jQuery.when(jQuery.get(protocol + "//" + site + "/wp-admin/admin.php?page=wc-settings&tab=products&section=display", function(data) {
-						shopPageId = jQuery("#woocommerce_shop_page_id option:selected", data).val()
-						if ("undefined" != typeof shopPageId && shopPageId.length > 0) {
-							wcPages.Shop = protocol + "//" + site + "/?p=" + shopPageId
-						}
-					}).done(function() {}))
-					jQuery.when(jQuery.get(protocol + "//" + site + "/wp-admin/admin.php?page=wc-settings&tab=checkout", function(data) {
-						cartPageId = jQuery("#woocommerce_cart_page_id option:selected", data).val()
-						if ("undefined" != typeof cartPageId && cartPageId.length > 0) {
-							wcPages.Cart = protocol + "//" + site + "/?p=" + cartPageId
-						}
-						checkoutPageId = jQuery("#woocommerce_checkout_page_id option:selected", data).val()
-						if ("undefined" != typeof checkoutPageId && checkoutPageId.length > 0) {
-							wcPages.Checkout = protocol + "//" + site + "/?p=" + checkoutPageId
-						}
-					}).done(function() {}))
-					jQuery.when(jQuery.get(protocol + "//" + site + "/wp-admin/admin.php?page=wc-settings&tab=account", function(data) {
-						myAccountPageId = jQuery("#woocommerce_myaccount_page_id option:selected", data).val()
-						if ("undefined" != typeof myAccountPageId && myAccountPageId.length > 0) {
-							wcPages["My Account"] = protocol + "//" + site + "/?p=" + myAccountPageId
-						}
-					}).done(function() {}))
+					jQuery.when(jQuery.get(protocol + "//" + site +
+						"/wp-admin/admin.php?page=wc-settings&tab=products&section=display",
+						function(data) {
+							shopPageId = jQuery("#woocommerce_shop_page_id option:selected", data).val()
+							if ("undefined" != typeof shopPageId && shopPageId.length > 0) {
+								wcPages.Shop = protocol + "//" + site + "/?p=" + shopPageId
+							}
+						}).done(function() {}))
+					jQuery.when(jQuery.get(protocol + "//" + site + "/wp-admin/admin.php?page=wc-settings&tab=checkout",
+						function(data) {
+							cartPageId = jQuery("#woocommerce_cart_page_id option:selected", data).val()
+							if ("undefined" != typeof cartPageId && cartPageId.length > 0) {
+								wcPages.Cart = protocol + "//" + site + "/?p=" + cartPageId
+							}
+							checkoutPageId = jQuery("#woocommerce_checkout_page_id option:selected", data).val()
+							if ("undefined" != typeof checkoutPageId && checkoutPageId.length > 0) {
+								wcPages.Checkout = protocol + "//" + site + "/?p=" + checkoutPageId
+							}
+						}).done(function() {}))
+					jQuery.when(jQuery.get(protocol + "//" + site + "/wp-admin/admin.php?page=wc-settings&tab=account",
+						function(data) {
+							myAccountPageId = jQuery("#woocommerce_myaccount_page_id option:selected", data).val()
+							if ("undefined" != typeof myAccountPageId && myAccountPageId.length > 0) {
+								wcPages["My Account"] = protocol + "//" + site + "/?p=" + myAccountPageId
+							}
+						}).done(function() {}))
 					processResponse(wcLinks)
 				}))
 			} else {
@@ -105,7 +108,9 @@ jQuery(document).ready(function() {
 		hideYoast: true
 	}, function(items) {
 		if (items.hideYoast) {
-			jQuery(".column-wpseo-score, .column-wpseo-title, .column-wpseo-title, .column-wpseo-metadesc, .column-wpseo-focuskw").hide()
+			jQuery(
+				".column-wpseo-score, .column-wpseo-title, .column-wpseo-title, .column-wpseo-metadesc, .column-wpseo-focuskw .wp-pointer"
+			).hide()
 		}
 	})
 
@@ -113,7 +118,8 @@ jQuery(document).ready(function() {
 		var ret
 		var scriptContent = "if ('undefined' != typeof ajaxurl) {\n";
 		scriptContent += "jQuery('body').attr('tmp_ajaxurl', ajaxurl)}\n"
-		scriptContent += "else if ( 'undefined' != typeof woocommerce_params && 'undefined' != typeof woocommerce_params.ajax_url) {\n"
+		scriptContent +=
+			"else if ( 'undefined' != typeof woocommerce_params && 'undefined' != typeof woocommerce_params.ajax_url) {\n"
 		scriptContent += "jQuery('body').attr('tmp_ajaxurl', woocommerce_params.ajax_url)\n"
 		scriptContent += "}";
 		var script = document.createElement('script');
@@ -137,7 +143,9 @@ chrome.runtime.onMessage.addListener(
 			}
 			if ("hideYoast" == request.message.action) {
 				show = (request.message.value) ? false : true
-				jQuery(".column-wpseo-score, .column-wpseo-title, .column-wpseo-title, .column-wpseo-metadesc, .column-wpseo-focuskw").toggle(show)
+				jQuery(
+					".column-wpseo-score, .column-wpseo-title, .column-wpseo-title, .column-wpseo-metadesc, .column-wpseo-focuskw"
+				).toggle(show)
 			}
 			if ("whats-the-content" == request.message.action) {
 				//is site content defined? if so, send that
