@@ -2,7 +2,6 @@
 	"name": "Hiro's Quick Links",
 	"description": "Handy navigation links for WooCommerce sites",
 	"version": "0.7",
-	"update_url": "http://www.thathandsomebeardedguy.com/updates.xml",
 	"icons": {
 		"16": "icon_16.png",
 		"48": "icon_48.png",
