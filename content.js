@@ -45,7 +45,7 @@ jQuery(document).ready(function() {
 		chrome.runtime.sendMessage(message, function(response) { //ask the background script for content for this site
 			if ("undefined" != response.content && false == response.content) { //bg script didn't have content - fetch new
 				jQuery.when(jQuery.get(protocol + "//" + site + "/wp-admin/admin.php?page=wc-settings", function(data) {
-					links = jQuery('h2.woo-nav-tab-wrapper a', data)
+					links = jQuery('h2.woo-nav-tab-wrapper a, nav.woo-nav-tab-wrapper a', data)
 					wcLinks = '<ul>'
 					jQuery(links).each(function(index) {
 						anchorText = jQuery(this).html()
@@ -101,6 +101,13 @@ jQuery(document).ready(function() {
 				return true;
 			})
 		})
+		if (window.location.href.indexOf('edit.php?post_type=product') > 0 ) {
+			match = /[0-9]*/
+			jQuery('td.name.has-row-actions div.row-actions').each(function(){
+				id = jQuery('span.id',jQuery(this)).html().replace(/^\D+/g, '').match(match)[0]
+				jQuery(this).append('<span class="add-to-cart"> | <a href="' + protocol + '//' + site + '?add-to-cart=' + id + '">Add to cart</span>')
+			})
+		}
 	}
 
 	/*get the hide yoast setting, hide if appropriate*/
@@ -109,7 +116,7 @@ jQuery(document).ready(function() {
 	}, function(items) {
 		if (items.hideYoast) {
 			jQuery(
-				".column-wpseo-score, .column-wpseo-title, .column-wpseo-title, .column-wpseo-metadesc, .column-wpseo-focuskw .wp-pointer"
+				".column-wpseo-score, .column-wpseo-title, .column-wpseo-title, .column-wpseo-metadesc, .column-wpseo-focuskw, div.wp-pointer"
 			).hide()
 		}
 	})
@@ -144,7 +151,7 @@ chrome.runtime.onMessage.addListener(
 			if ("hideYoast" == request.message.action) {
 				show = (request.message.value) ? false : true
 				jQuery(
-					".column-wpseo-score, .column-wpseo-title, .column-wpseo-title, .column-wpseo-metadesc, .column-wpseo-focuskw"
+					".column-wpseo-score, .column-wpseo-title, .column-wpseo-title, .column-wpseo-metadesc, .column-wpseo-focuskw, div.wp-pointer"
 				).toggle(show)
 			}
 			if ("whats-the-content" == request.message.action) {
