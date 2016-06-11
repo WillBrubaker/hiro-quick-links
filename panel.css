@@ -35,6 +35,17 @@ button {
     white-space: nowrap;
 }
 
+button#language {
+	padding: 0 45px;
+}
+
+div#engbutton *, div#resetlang * {
+	margin: 3px;
+}
+
+div#engbutton, div#resetlang {
+	display:none;
+}
 button:hover {
 	background: none repeat scroll 0 0 #bb77ae;
     border-color: #aa559a;

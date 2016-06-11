@@ -6,6 +6,7 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 </head>
 <body>
+	<div id="debugmessages"></div>
 	<div id="panel-content">
 		<p>WooCommerce Navigation Links</p>
 		<div id="wc-links"></div>
@@ -15,7 +16,12 @@
 		<p>Utilities</p>
 		<button type="button" id="toggle-notices" tabindex="-1">Toggle Notices</button><br>
 		<label for="hide-yoast">Hide Yoast?</label><input id="hide-yoast" type="checkbox" name="hideYoast" tabindex="-1"><br>
-		<label for="language">Press 1 for English<br><button type="button" id="language" tabindex="-1">1</button></label><br>
+		<div id="engbutton">
+	<button type="button" id="language" tabindex="-1" title="Press 1 for English">1</button><br>
+	</div>
+		<div id="resetlang">
+	<button type="button" id="reset" tabindex="-1">Reset Language</button><br>
+	</div>
 	</div>
 	<script src="jquery.js"></script>
 	<script src="jquery.qtip.min.js"></script>

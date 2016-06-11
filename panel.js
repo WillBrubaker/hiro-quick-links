@@ -37,6 +37,42 @@ $("#toggle-notices").on("click", function() {
 	window.close()
 })
 
+$("#engbutton").on("click",function(){
+	chrome.tabs.query({
+		active: true,
+		currentWindow: true
+	}, function(tabs) {
+		message = {
+			"action": "setLanguage",
+			"value": true
+		}
+		chrome.tabs.sendMessage(tabs[0].id, {
+			message: message
+		}, function(response) {
+			return true
+		})
+	})
+	window.close()
+})
+
+$("#reset").on("click",function(){
+	chrome.tabs.query({
+		active: true,
+		currentWindow: true
+	}, function(tabs) {
+		message = {
+			"action": "resetLanguage",
+			"value": true
+		}
+		chrome.tabs.sendMessage(tabs[0].id, {
+			message: message
+		}, function(response) {
+			return true
+		})
+	})
+	window.close()
+})
+
 /* updates the extension settings from the panel */
 jQuery("#hide-yoast").on("change", function() {
 	hideYoast =
@@ -133,6 +169,26 @@ jQuery(document).ready(function() {
 					window.close()
 				})
 			}
+		})
+		message = {
+			"message": {
+				"action": "helper-active"
+			}
+		}
+		chrome.tabs.sendMessage(tabs[0].id, message, function(response) {
+				if ("undefined" != typeof response && "undefined" != typeof response.content) {
+					jQuery('#engbutton').toggle(response.content)
+				}
+		})
+		message = {
+			"message": {
+				"action": "language-overridden"
+			}
+		}
+		chrome.tabs.sendMessage(tabs[0].id, message, function(response) {
+				if ("undefined" != typeof response && "undefined" != typeof response.content) {
+					jQuery('#resetlang').toggle(response.content)
+				}
 		})
 	})
 })

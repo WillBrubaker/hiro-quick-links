@@ -116,7 +116,7 @@ jQuery(document).ready(function() {
 	}, function(items) {
 		if (items.hideYoast) {
 			jQuery(
-				".column-wpseo-score, .column-wpseo-title, .column-wpseo-title, .column-wpseo-metadesc, .column-wpseo-focuskw, div.wp-pointer"
+				".column-wpseo-score, .column-wpseo-title, #wpseo_meta, .column-wpseo-metadesc, .column-wpseo-focuskw, div.wp-pointer"
 			).hide()
 		}
 	})
@@ -151,7 +151,7 @@ chrome.runtime.onMessage.addListener(
 			if ("hideYoast" == request.message.action) {
 				show = (request.message.value) ? false : true
 				jQuery(
-					".column-wpseo-score, .column-wpseo-title, .column-wpseo-title, .column-wpseo-metadesc, .column-wpseo-focuskw, div.wp-pointer"
+					".column-wpseo-score, .column-wpseo-title, #wpseo_meta, .column-wpseo-metadesc, .column-wpseo-focuskw, div.wp-pointer"
 				).toggle(show)
 			}
 			if ("whats-the-content" == request.message.action) {
@@ -176,6 +176,25 @@ chrome.runtime.onMessage.addListener(
 				sendResponse({
 					"content": siteContent
 				})
+			}
+			if ("helper-active" == request.message.action) {
+				canSwitch = (jQuery('#menu-dashboard > ul a[href$="page=woothemes-helper"]').length > 0) && (document.documentElement.lang.indexOf('en') == -1)
+				sendResponse({"content": canSwitch })
+			}
+			if ("setLanguage" == request.message.action) {
+				var expires = new Date()
+   	expires.setTime(expires.getTime()+(60*1000*15))
+				document.cookie = "wooninja_language=en;path=/;expires=" + expires.toUTCString() + ";"
+				location.reload()
+			}
+			if ("resetLanguage" == request.message.action) {
+				var expires = new Date()
+   	expires.setTime(expires.getTime()-(60*1000*15))
+				document.cookie = "wooninja_language=en;path=/;expires=" + expires.toUTCString() + ";"
+				location.reload()
+			}
+			if ("language-overridden" == request.message.action) {
+				sendResponse({"content":( document.cookie.indexOf("wooninja_language") > -1 ) ? true : false})
 			}
 		}
 	})
