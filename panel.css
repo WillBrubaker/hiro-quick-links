@@ -90,6 +90,7 @@ ul {
 body {
 	background-color: #f7f7f7;
 	width: 300px;
+	min-height: 600px;
 }
 
 div#utilities > * {

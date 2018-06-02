@@ -29,7 +29,7 @@ var wcPages = {
 
 jQuery(document).ready(function() {
 	/*window variables aren't accessible to extension content scripts, need to get the ajax url somehow*/
-	var ajaxUrl = retrieveAjaxUrl()
+	var ajaxUrl = retrieveAjaxUrl();
 	if ("undefined" != typeof ajaxUrl) { //ajaxurl is defined, this is probably a WordPress site
 		/*try to get a base url for the site*/
 		var link = document.createElement("a")
@@ -45,20 +45,21 @@ jQuery(document).ready(function() {
 		chrome.runtime.sendMessage(message, function(response) { //ask the background script for content for this site
 			if ("undefined" != response.content && false == response.content) { //bg script didn't have content - fetch new
 				jQuery.when(jQuery.get(protocol + "//" + site + "/wp-admin/admin.php?page=wc-settings", function(data) {
-					links = jQuery('h2.woo-nav-tab-wrapper a, nav.woo-nav-tab-wrapper a', data)
+					links = jQuery('h2.woo-nav-tab-wrapper a, nav.woo-nav-tab-wrapper a', data);
 					wcLinks = '<ul>'
 					jQuery(links).each(function(index) {
-						anchorText = jQuery(this).html()
-						href = jQuery(this).attr('href')
+						anchorText = jQuery(this).html();
+						href = jQuery(this).attr('href');
 						if (index > 0) {
 							wcLinks += '<li>'
 						}
-						wcLinks += '<a href="' + href + '" tabindex="-1">' + anchorText + '</a>'
+
+						wcLinks += '<a href="' + href + '" tabindex="-1">' + anchorText + '</a>';
 						if (index > 0) {
-							wcLinks += '</li>'
+							wcLinks += '</li>';
 						}
-					})
-					wcLinks += '</ul>'
+					});
+					wcLinks += '</ul>';
 				}).fail(function(xhr) {
 					console.log(xhr)
 				}).done(function() {
@@ -69,25 +70,48 @@ jQuery(document).ready(function() {
 							if ("undefined" != typeof shopPageId && shopPageId.length > 0) {
 								wcPages.Shop = protocol + "//" + site + "/?p=" + shopPageId
 							}
-						}).done(function() {}))
-					jQuery.when(jQuery.get(protocol + "//" + site + "/wp-admin/admin.php?page=wc-settings&tab=checkout",
+						}).done(function() {}));
+
+					//wc 3.4 compat
+					jQuery.when(jQuery.get(protocol + "//" + site + "/wp-admin/admin.php?page=wc-settings&tab=advanced",
 						function(data) {
-							cartPageId = jQuery("#woocommerce_cart_page_id option:selected", data).val()
+							cartPageId = jQuery("select#woocommerce_cart_page_id option:selected", data).val();
+							checkoutPageId = jQuery("select#woocommerce_checkout_page_id option:selected", data).val();
+							myAccountPageId = jQuery("select#woocommerce_myaccount_page_id option:selected", data).val();
 							if ("undefined" != typeof cartPageId && cartPageId.length > 0) {
 								wcPages.Cart = protocol + "//" + site + "/?p=" + cartPageId
 							}
-							checkoutPageId = jQuery("#woocommerce_checkout_page_id option:selected", data).val()
 							if ("undefined" != typeof checkoutPageId && checkoutPageId.length > 0) {
 								wcPages.Checkout = protocol + "//" + site + "/?p=" + checkoutPageId
 							}
-						}).done(function() {}))
-					jQuery.when(jQuery.get(protocol + "//" + site + "/wp-admin/admin.php?page=wc-settings&tab=account",
-						function(data) {
-							myAccountPageId = jQuery("#woocommerce_myaccount_page_id option:selected", data).val()
 							if ("undefined" != typeof myAccountPageId && myAccountPageId.length > 0) {
 								wcPages["My Account"] = protocol + "//" + site + "/?p=" + myAccountPageId
 							}
-						}).done(function() {}))
+
+						}).done(function() {}));
+
+
+					if ("undefined" == typeof shopPageId && "undefined" === typeof cartPageId && "undefined" === typeof myAccountPageId) { //probably is wc < 3.4
+						jQuery.when(jQuery.get(protocol + "//" + site + "/wp-admin/admin.php?page=wc-settings&tab=checkout",
+							function(data) {
+								cartPageId = jQuery("#woocommerce_cart_page_id option:selected", data).val()
+								if ("undefined" != typeof cartPageId && cartPageId.length > 0) {
+									wcPages.Cart = protocol + "//" + site + "/?p=" + cartPageId
+								}
+								checkoutPageId = jQuery("#woocommerce_checkout_page_id option:selected", data).val()
+								if ("undefined" != typeof checkoutPageId && checkoutPageId.length > 0) {
+									wcPages.Checkout = protocol + "//" + site + "/?p=" + checkoutPageId
+								}
+							}).done(function() {}))
+
+						jQuery.when(jQuery.get(protocol + "//" + site + "/wp-admin/admin.php?page=wc-settings&tab=account",
+							function(data) {
+								myAccountPageId = jQuery("#woocommerce_myaccount_page_id option:selected", data).val()
+								if ("undefined" != typeof myAccountPageId && myAccountPageId.length > 0) {
+									wcPages["My Account"] = protocol + "//" + site + "/?p=" + myAccountPageId
+								}
+							}).done(function() {}))
+					}
 					processResponse(wcLinks)
 				}))
 			} else {
@@ -101,11 +125,12 @@ jQuery(document).ready(function() {
 				return true;
 			})
 		})
-		if (window.location.href.indexOf('edit.php?post_type=product') > 0 ) {
+		if (window.location.href.indexOf('edit.php?post_type=product') > 0) {
 			match = /[0-9]*/
-			jQuery('td.name.has-row-actions div.row-actions').each(function(){
-				id = jQuery('span.id',jQuery(this)).html().replace(/^\D+/g, '').match(match)[0]
-				jQuery(this).append('<span class="add-to-cart"> | <a href="' + protocol + '//' + site + '?add-to-cart=' + id + '">Add to cart</span>')
+			jQuery('td.name.has-row-actions div.row-actions').each(function() {
+				id = jQuery('span.id', jQuery(this)).html().replace(/^\D+/g, '').match(match)[0]
+				jQuery(this).append('<span class="add-to-cart"> | <a href="' + protocol + '//' + site + '?add-to-cart=' +
+					id + '">Add to cart</span>')
 			})
 		}
 	}
@@ -178,23 +203,28 @@ chrome.runtime.onMessage.addListener(
 				})
 			}
 			if ("helper-active" == request.message.action) {
-				canSwitch = (jQuery('#menu-dashboard > ul a[href$="page=woothemes-helper"]').length > 0) && (document.documentElement.lang.indexOf('en') == -1)
-				sendResponse({"content": canSwitch })
+				canSwitch = (jQuery('#menu-dashboard > ul a[href$="page=woothemes-helper"]').length > 0) && (document.documentElement
+					.lang.indexOf('en') == -1)
+				sendResponse({
+					"content": canSwitch
+				})
 			}
 			if ("setLanguage" == request.message.action) {
 				var expires = new Date()
-   	expires.setTime(expires.getTime()+(60*1000*15))
+				expires.setTime(expires.getTime() + (60 * 1000 * 15))
 				document.cookie = "wooninja_language=en;path=/;expires=" + expires.toUTCString() + ";"
 				location.reload()
 			}
 			if ("resetLanguage" == request.message.action) {
 				var expires = new Date()
-   	expires.setTime(expires.getTime()-(60*1000*15))
+				expires.setTime(expires.getTime() - (60 * 1000 * 15))
 				document.cookie = "wooninja_language=en;path=/;expires=" + expires.toUTCString() + ";"
 				location.reload()
 			}
 			if ("language-overridden" == request.message.action) {
-				sendResponse({"content":( document.cookie.indexOf("wooninja_language") > -1 ) ? true : false})
+				sendResponse({
+					"content": (document.cookie.indexOf("wooninja_language") > -1) ? true : false
+				})
 			}
 		}
 	})
@@ -207,15 +237,28 @@ function processResponse(wcLinks) {
 			wcMenu = $("#toplevel_page_woocommerce ul.wp-submenu", data)
 		})
 	}
-	subLinks = $('li a', wcLinks)
-	var linkSet
-	var numLoops = subLinks.length
+	subLinks = $('li a', wcLinks);
+	var linkSet;
+	var numLoops = subLinks.length;
 	$(subLinks).each(function(index) {
 		var sub = $(this)
 		var theLinks = {}
-		var href = $(this).attr('href')
+		var href = $(this).attr('href');
 		$.when($.get(href, function(subData) {
-			underLinks[index] = $('ul.subsubsub', subData)
+			if (href.indexOf('&tab=checkout') > 0 && $('ul.subsubsub', subData).length <= 0) {
+				gatewayLinks = '<ul class="subsubsub">';
+				jQuery('table.wc_gateways tbody tr', subData).each(function(index) {
+					gatewayLinks += '<li><a href="' + $("td.action a.button", this).attr('href') + '" tabindex="-1">' +
+						jQuery('td.name a', this).text() + '</a></li>';
+					if (index < (jQuery('table.wc_gateways tbody tr', subData).length - 1)) {
+						gatewayLinks += ' | ';
+					}
+				});
+				gatewayLinks += '</ul>';
+				underLinks[index] = $(gatewayLinks);
+			} else {
+				underLinks[index] = $('ul.subsubsub', subData);
+			}
 		}).done(function() {
 			if (underLinks.length >= numLoops) {
 				html = $(wcLinks).html().split('<li>')
